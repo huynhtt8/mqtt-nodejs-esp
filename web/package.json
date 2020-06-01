@@ -1,0 +1,15 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "description": "Create web to subcribe and publish on mqtt mosquito",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Huynh Trinh",
+  "license": "ISC",
+  "dependencies": {
+    "chart.js": "^2.9.3",
+    "socket.io": "^2.3.0"
+  }
+}
