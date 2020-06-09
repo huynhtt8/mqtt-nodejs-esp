@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Thực Hành Chuyên Sâu</title>
-  
+  <title>SmartHome Dashboard</title>
+
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="static/css/adminlte.min.css">
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
@@ -18,12 +18,59 @@
 <div class="container-fluid">
   <div class="row mb-2">
     <div class="card-header">
-      <h1 class="m-0 text-dark">Thực Hành Chuyên Sâu</h1>
+      <h1 class="m-0 text-dark">SmartHome Dashboard</h1>
     </div>
 
   </div>
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-8">
+      <div class="row">
+        <div class="col-md-4">
+          <div id="temperature-box-container" class="small-box bg-success">
+            <div class="inner">
+              <h2>Temperature
+                <span>
+                    <i class="fa fa-thermometer-quarter" aria-hidden="true"></i>
+                </span>
+              </h2>
+              <h3>
+                <span id="temperature-box" >27</span>
+                <span> °C</span>
+              </h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div id="humidity-box-container" class="small-box bg-info">
+            <div class="inner">
+              <h2>Humidity
+                <span>
+                    <i class="fa fa-umbrella" aria-hidden="true"></i>
+                  </span>
+              </h2>
+              <h3>
+                <span id="humidity-box" >75</span>
+                <span> %</span>
+              </h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div id="rain-box-container" class="small-box bg-blue">
+            <div class="inner">
+              <h2>Rain
+                <span>
+                    <i class="fa fa-umbrella" aria-hidden="true"></i>
+                  </span>
+              </h2>
+              <h3>
+                <span id="rain-box" >80</span>
+                <span> %</span>
+              </h3>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="card card-info">
         <div class="card-header">
           <h3 class="card-title">Chart Temperature and Humidity</h3>
@@ -35,82 +82,69 @@
         </div>
       </div>
     </div>
-
-    <div class="col-md-6">
-      <div class="card card-info">
-        <div class="card-header">
-          <h3 class="card-title">Temperature and Humidity</h3>
+    <div class="col-md-4">
+      <table class="table">
+        <thead class="thead-dark">
+        <tr>
+          <th scope="col">Temp</th>
+          <th scope="col">Humi</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>25</td>
+          <td>75</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="small-box">
+        <div class="inner">
+          <h2>Led</h2>
+          <div class="button-switch">
+            <input onclick="chargeStatusLedOne()"  type="checkbox" id="switch-led-one" class="switch"/>
+            <label for="switch-led-one" class="lbl-off">Off</label>
+            <label for="switch-led-one" class="lbl-on">On</label>
+          </div>
         </div>
-        <div class="card-body">
-          <div class="">
-            <div class="row">
-              <div class="col-md-6 col-sm-6 col-12">
-                <div id="temperature-box-container" class="small-box">
-                  <div class="inner">
-                    <h2>Temperature
-                      <span>
-                        <i class="fa fa-thermometer-quarter" aria-hidden="true"></i>
-                      </span>
-                    </h2>
-                    <h3>
-                      <span id="temperature-box" >?</span>
-                      <span> °C</span>
-                    </h3>
-                  </div>
-                </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="small-box">
+        <div class="inner">
+          <h2>Lamp</h2>
+          <div class="button-switch">
+            <input onclick="chargeStatusLedOne()"  type="checkbox" id="switch-led-two" class="switch"/>
+            <label for="switch-led-two" class="lbl-off">Off</label>
+            <label for="switch-led-two" class="lbl-on">On</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="small-box">
+        <div class="inner">
+          <h2>Fan</h2>
+          <div class="button-switch">
+            <form>
+              <div class="rage" id="rageslider1">
+                <input class="rage__input" type="range" name="rage" value="0" min="0" max="20">
               </div>
-              <div class="col-md-6 col-sm-6 col-12">
-                <div id="humidity-box-container" class="small-box">
-                  <div class="inner">
-                    <h2>Humidity
-                      <span>
-                        <i class="fa fa-umbrella" aria-hidden="true"></i>
-                      </span>
-                    </h2>
-                    <h3>
-                      <span id="humidity-box" >?</span>
-                      <span> %</span>
-                    </h3>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6 col-sm-6 col-12">
-                <div class="small-box">
-                  <div class="inner">
-                    <h2>Led One</h2>
-                    <div class="button-switch">
-                      <input onclick="chargeStatusLedOne()"  type="checkbox" id="switch-led-one" class="switch"/>
-                      <label for="switch-led-one" class="lbl-off">Off</label>
-                      <label for="switch-led-one" class="lbl-on">On</label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6 col-sm-6 col-12">
-                <div class="small-box">
-                  <div class="inner">
-                    <h2>Led Two</h2>
-                    <div class="button-switch">
-                      <input onclick="chargeStatusLedTwo()" type="checkbox" id="switch-led-two" class="switch"/>
-                      <label for="switch-led-two" class="lbl-off">Off</label>
-                      <label for="switch-led-two" class="lbl-on">On</label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            </form>
           </div>
         </div>
       </div>
     </div>
   </div>
-
-</div>
-
-<body>
+  <body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script src="/static/js/index.js"></script>
-</body>
+  </body>
 
 </html>
