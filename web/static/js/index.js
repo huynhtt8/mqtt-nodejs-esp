@@ -65,7 +65,9 @@ socket.on('htn/sensors', (data) => {
     } else { //If there are already 15 data points in the graph.
         chart.data.labels.shift(); //Remove first time data
         chart.data.labels.push(time); //Insert latest time data
+        chart.data.datasets[0].data.shift();
         chart.data.datasets[0].data.push(data.temp);
+        chart.data.datasets[1].data.shift();
         chart.data.datasets[1].data.push(data.humi);
     }
     chart.update(); //Update the graph.
