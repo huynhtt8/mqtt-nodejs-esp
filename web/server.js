@@ -49,15 +49,15 @@ client.on('message', function (topic, message) {
     const datetime = new Date();
     io.sockets.emit('htn/sensors', {"temp": temp, "humi": humi, "datetime": datetime});
 
-    const values = [
-        temp,
-        humi,
-        datetime
-    ];
-    connection.query(sql, values, function (err, result) {
-      if (err) throw err;
-      console.log(payload, "added to database");
-    });
+    // const values = [
+    //     temp,
+    //     humi,
+    //     datetime
+    // ];
+    // connection.query(sql, values, function (err, result) {
+    //   if (err) throw err;
+    //   console.log(payload, "added to database");
+    // });
   }
 });
 

@@ -9,20 +9,102 @@
 #define LEDTOPIC1 "htn/led1"
 #define LEDTOPIC2 "htn/led2"
 #define BUILTIN_LED2 4
+#define WARNNING_LED1 D5
+#define BUZZER 12 //D6
+#define GAS_SENSOR_PIN A0
+
 DHT dht(DHTPIN, DHTTYPE);
 
-//const char* ssid = "Huynh Trinh"; //replace this with your wifi  name
-//const char* password = "16102017"; //replace with your wifi password
-//const char* mqtt_server = "192.168.1.104"; //replace this with IP address of machine
-const char* ssid = "Huynh"; //replace this with your wifi  name
-const char* password = "11111112"; //replace with your wifi password
-const char* mqtt_server = "172.20.10.3"; //replace this with IP address of machine
+const char* ssid = "Huynh Trinh"; //replace this with your wifi  name
+const char* password = "16102017"; //replace with your wifi password
+const char* mqtt_server = "192.168.1.104"; //replace this with IP address of machine
+//const char* ssid = "Huynh"; //replace this with your wifi  name
+//const char* password = "11111112"; //replace with your wifi password
+//const char* mqtt_server = "172.20.10.3"; //replace this with IP address of machine
 
 WiFiClient espClient;
 PubSubClient client(espClient);
 long lastMsg = 0;
 
 char* converPayload(String payloadString);
+void setup_wifi();
+void callback(char* topic, byte* payload, unsigned int length);
+void reconnect();
+
+
+void setup() {
+  pinMode(BUILTIN_LED, OUTPUT);
+  digitalWrite(BUILTIN_LED, HIGH);
+  pinMode(BUILTIN_LED2, OUTPUT);
+  digitalWrite(BUILTIN_LED2, HIGH);
+
+  Serial.begin(115200);
+  setup_wifi();
+  client.setServer(mqtt_server, 1883);
+  client.setCallback(callback);
+
+  //setup dht
+  dht.begin();
+
+  //setup buzzer led
+  pinMode(WARNNING_LED1, OUTPUT);
+  digitalWrite(WARNNING_LED1, HIGH);
+
+}
+
+void loop() {
+
+  if (!client.connected()) {
+    reconnect();
+  }
+  client.loop();
+
+  int analogSensor = analogRead(GAS_SENSOR_PIN);
+  if (analogSensor > 500) {
+    digitalWrite(WARNNING_LED1, LOW);
+    tone(BUZZER, 1000, 200);
+  } else {
+    digitalWrite(WARNNING_LED1, HIGH);
+    noTone(BUZZER);
+  }
+
+  long now = millis();
+  if (now - lastMsg > 2000) {
+    lastMsg = now;
+    // Reading temperature or humidity takes about 250 milliseconds!
+    // Sensor readings may also be up to 2 seconds 'old' (its a very slow sensor)
+    float h = dht.readHumidity();
+    // Read temperature as Celsius (the default)
+    float t = dht.readTemperature();
+
+    // Check if any reads failed and exit early (to try again).
+    if (isnan(h) || isnan(t)) {
+      Serial.println("Failed to read from DHT sensor!");
+      return;
+    }
+
+    char* payload =  preparePayload(h, t);
+
+    Serial.print("Publish message: ");
+    Serial.println(payload);
+    client.publish(SENSORTOPIC, payload);
+  }
+}
+
+
+char* preparePayload(float h, float t) {
+  String payload = "{";
+  payload += "\"temp\":";
+  payload += t;
+  payload += ",";
+  payload += "\"humi\":";
+  payload += h;
+  payload += "}";
+  char attributes[1000];
+  payload.toCharArray(attributes, 1000);
+
+  return attributes;
+}
 
 void setup_wifi() {
 
@@ -71,8 +153,6 @@ void callback(char* topic, byte* payload, unsigned int length) {
       digitalWrite(BUILTIN_LED2, HIGH);
     }
   }
-
-
 }
 
 void reconnect() {
@@ -85,7 +165,7 @@ void reconnect() {
     // Attempt to connect
     if (client.connect(clientId.c_str())) {
       Serial.println("connected");
-      
+
       // subscribe
       client.subscribe(LEDTOPIC1);
       client.subscribe(LEDTOPIC2);
@@ -97,64 +177,4 @@ void reconnect() {
       delay(5000);
     }
   }
-}
-
-void setup() {
-  pinMode(BUILTIN_LED, OUTPUT);
-  digitalWrite(BUILTIN_LED, HIGH);
-  pinMode(BUILTIN_LED2, OUTPUT);
-  digitalWrite(BUILTIN_LED2, HIGH);
-
-  Serial.begin(115200);
-  setup_wifi();
-  client.setServer(mqtt_server, 1883);
-  client.setCallback(callback);
-
-  //setup dht
-  dht.begin();
-}
-
-void loop() {
-
-  if (!client.connected()) {
-    reconnect();
-  }
-  client.loop();
-
-  long now = millis();
-  if (now - lastMsg > 2000) {
-    lastMsg = now;
-    // Reading temperature or humidity takes about 250 milliseconds!
-    // Sensor readings may also be up to 2 seconds 'old' (its a very slow sensor)
-    float h = dht.readHumidity();
-    // Read temperature as Celsius (the default)
-    float t = dht.readTemperature();
-
-    // Check if any reads failed and exit early (to try again).
-    if (isnan(h) || isnan(t)) {
-      Serial.println("Failed to read from DHT sensor!");
-      return;
-    }
-
-    char* payload =  preparePayload(h, t);
-
-    Serial.print("Publish message: ");
-    Serial.println(payload);
-    client.publish(SENSORTOPIC, payload);
-  }
-}
-
-
-char* preparePayload(float h, float t) {
-  String payload = "{";
-  payload += "\"temp\":";
-  payload += t;
-  payload += ",";
-  payload += "\"humi\":";
-  payload += h;
-  payload += "}";
-  char attributes[1000];
-  payload.toCharArray(attributes, 1000);
-
-  return attributes;
 }
