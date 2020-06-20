@@ -44,10 +44,12 @@ const sql = "INSERT INTO `sensors` (temp, humi, datetime) VALUES (?, ?, ?)";
 client.on('message', function (topic, message) {
   if (topic === 'htn/sensors') {
     const payload = JSON.parse(message);
+    console.log(payload);
     const temp = payload['temp'];
     const humi = payload['humi'];
+    const gas = payload['gas'];
     const datetime = new Date();
-    io.sockets.emit('htn/sensors', {"temp": temp, "humi": humi, "datetime": datetime});
+    io.sockets.emit('htn/sensors', {"temp": temp, "humi": humi, "gas": gas, "datetime": datetime});
 
     // const values = [
     //     temp,

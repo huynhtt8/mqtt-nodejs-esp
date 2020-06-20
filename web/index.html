@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Thực Hành Chuyên Sâu</title>
+  <title>Thiết kế ngoại vi và kỹ thuật ghép nối</title>
   
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="static/css/adminlte.min.css">
@@ -18,7 +18,7 @@
 <div class="container-fluid">
   <div class="row mb-2">
     <div class="card-header">
-      <h1 class="m-0 text-dark">Thực Hành Chuyên Sâu</h1>
+      <h1 class="m-0 text-dark">Thiết kế ngoại vi và kỹ thuật ghép nối</h1>
     </div>
 
   </div>
@@ -26,7 +26,7 @@
     <div class="col-md-6">
       <div class="card card-info">
         <div class="card-header">
-          <h3 class="card-title">Chart Temperature and Humidity</h3>
+          <h3 class="card-title">Chart Temperature, Humidity and Gas</h3>
         </div>
         <div class="card-body">
           <div class="chart">
@@ -44,14 +44,14 @@
         <div class="card-body">
           <div class="">
             <div class="row">
-              <div class="col-md-6 col-sm-6 col-12">
+              <div class="col-md-4 col-sm-4 col-12">
                 <div id="temperature-box-container" class="small-box">
                   <div class="inner">
-                    <h2>Temperature
+                    <h4>Temperature
                       <span>
                         <i class="fa fa-thermometer-quarter" aria-hidden="true"></i>
                       </span>
-                    </h2>
+                    </h4>
                     <h3>
                       <span id="temperature-box" >?</span>
                       <span> °C</span>
@@ -59,16 +59,31 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-6 col-sm-6 col-12">
+              <div class="col-md-4 col-sm-4 col-12">
                 <div id="humidity-box-container" class="small-box">
                   <div class="inner">
-                    <h2>Humidity
+                    <h4>Humidity
                       <span>
                         <i class="fa fa-umbrella" aria-hidden="true"></i>
                       </span>
-                    </h2>
+                    </h4>
                     <h3>
                       <span id="humidity-box" >?</span>
+                      <span> </span>
+                    </h3>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 col-sm-4 col-12">
+                <div id="gas-box-container" class="small-box">
+                  <div class="inner">
+                    <h4>Gas Sensor
+                      <span>
+                        <i class="fa fa-fire" aria-hidden="true"></i>
+                      </span>
+                    </h4>
+                    <h3>
+                      <span id="gas-box" >?</span>
                       <span> %</span>
                     </h3>
                   </div>

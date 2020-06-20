@@ -59,8 +59,8 @@ void loop() {
   }
   client.loop();
 
-  int analogSensor = analogRead(GAS_SENSOR_PIN);
-  if (analogSensor > 500) {
+  int gasSensor = analogRead(GAS_SENSOR_PIN);
+  if (gasSensor > 500) {
     digitalWrite(WARNNING_LED1, LOW);
     tone(BUZZER, 1000, 200);
   } else {
@@ -83,7 +83,7 @@ void loop() {
       return;
     }
 
-    char* payload =  preparePayload(h, t);
+    char* payload =  preparePayload(h, t, gasSensor);
 
     Serial.print("Publish message: ");
     Serial.println(payload);
@@ -92,13 +92,16 @@ void loop() {
 }
 
 
-char* preparePayload(float h, float t) {
+char* preparePayload(float h, float t, int gasSensor) {
   String payload = "{";
   payload += "\"temp\":";
   payload += t;
   payload += ",";
   payload += "\"humi\":";
   payload += h;
+  payload += ",";
+  payload += "\"gas\":";
+  payload += gasSensor;
   payload += "}";
   char attributes[1000];
   payload.toCharArray(attributes, 1000);
