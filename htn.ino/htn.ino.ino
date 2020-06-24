@@ -3,14 +3,14 @@
 #include <PubSubClient.h>
 #include "DHT.h"
 
-#define DHTPIN 5     // what digital pin we're connected to
+#define DHTPIN D1    // what digital pin we're connected to
 #define DHTTYPE DHT11   // DHT 11
 #define SENSORTOPIC "htn/sensors"
 #define LEDTOPIC1 "htn/led1"
 #define LEDTOPIC2 "htn/led2"
-#define BUILTIN_LED2 4
+#define BUILTIN_LED2 D2
 #define WARNNING_LED1 D5
-#define BUZZER 12 //D6
+#define BUZZER D7
 #define GAS_SENSOR_PIN A0
 
 DHT dht(DHTPIN, DHTTYPE);
@@ -58,24 +58,24 @@ void loop() {
     reconnect();
   }
   client.loop();
-
-  int gasSensor = analogRead(GAS_SENSOR_PIN);
-  if (gasSensor > 500) {
-    digitalWrite(WARNNING_LED1, LOW);
-    tone(BUZZER, 1000, 200);
-  } else {
-    digitalWrite(WARNNING_LED1, HIGH);
-    noTone(BUZZER);
-  }
-
   long now = millis();
-  if (now - lastMsg > 2000) {
+  if (now - lastMsg > 1000) {
     lastMsg = now;
     // Reading temperature or humidity takes about 250 milliseconds!
     // Sensor readings may also be up to 2 seconds 'old' (its a very slow sensor)
     float h = dht.readHumidity();
     // Read temperature as Celsius (the default)
     float t = dht.readTemperature();
+    
+   // Reading gas 
+    int gasSensor = analogRead(GAS_SENSOR_PIN);
+    if (gasSensor > 500) {
+      digitalWrite(WARNNING_LED1, LOW);
+      tone(BUZZER, 1000, 200);
+    } else {
+      digitalWrite(WARNNING_LED1, HIGH);
+      noTone(BUZZER);
+    }
 
     // Check if any reads failed and exit early (to try again).
     if (isnan(h) || isnan(t)) {
